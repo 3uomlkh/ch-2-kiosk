@@ -18,6 +18,12 @@ public class Kiosk {
                 showMenu();
                 System.out.print("메뉴를 선택하세요: ");
 
+                if (!sc.hasNextInt()) {
+                    System.out.println("숫자를 입력해주세요.");
+                    sc.next();
+                    continue;
+                }
+
                 // 메뉴 입력 받기
                 int input = sc.nextInt();
 
