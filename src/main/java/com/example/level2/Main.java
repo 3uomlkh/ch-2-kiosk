@@ -8,22 +8,28 @@ public class Main {
     static final List<MenuItem> menus = new ArrayList<>();
     public static void main(String[] args) {
         initializeMenu();
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            showMenu();
-            int input = sc.nextInt();
+        runKiosk();
+    }
 
-            if (input == 0) {
-                System.out.println("프로그램을 종료합니다.");
-                break;
-            }
+    private static void runKiosk() {
+        try (Scanner sc = new Scanner(System.in)) {
+            while (true) {
+                showMenu();
+                System.out.print("메뉴를 선택하세요: ");
+                int input = sc.nextInt();
 
-            if (isValidInput(input)) {
-                displaySelectedMenu(input);
-            } else {
-                System.out.println("올바른 메뉴 번호를 입력해주세요.");
+                if (input == 0) {
+                    System.out.println("프로그램을 종료합니다.");
+                    break;
+                }
+
+                if (isValidInput(input)) {
+                    displaySelectedMenu(input);
+                } else {
+                    System.out.println("올바른 메뉴 번호를 입력해주세요.");
+                }
+                System.out.println();
             }
-            System.out.println();
         }
     }
 
