@@ -12,18 +12,23 @@ public class Main {
         while (true) {
             showMenu();
             int input = sc.nextInt();
-            switch (input) {
-                case 1, 2, 3, 4:
-                    displaySelectedMenu(input);
-                    break;
-                case 0:
-                    System.out.println("프로그램을 종료합니다.");
-                    return;
-                default:
-                    System.out.println("올바른 메뉴 번호를 입력해주세요.");
+
+            if (input == 0) {
+                System.out.println("프로그램을 종료합니다.");
+                break;
+            }
+
+            if (isValidInput(input)) {
+                displaySelectedMenu(input);
+            } else {
+                System.out.println("올바른 메뉴 번호를 입력해주세요.");
             }
             System.out.println();
         }
+    }
+
+    private static boolean isValidInput(int input) {
+        return input > 0 && input <= menus.size();
     }
 
     private static void initializeMenu() {
