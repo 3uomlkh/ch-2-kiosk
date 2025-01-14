@@ -12,9 +12,13 @@ public class Main {
     }
 
     private static void runKiosk() {
+        // try-with-resources 방식으로 블록 종료 후 자동으로 close()
         try (Scanner sc = new Scanner(System.in)) {
             while (true) {
+                // 메뉴 출력
                 showMenu();
+
+                // 메뉴 입력 받기
                 System.out.print("메뉴를 선택하세요: ");
                 int input = sc.nextInt();
 
@@ -23,9 +27,9 @@ public class Main {
                     break;
                 }
 
-                if (isValidInput(input)) {
+                if (isValidInput(input)) { // 입력값이 0 이외의 유효한 값일 경우
                     displaySelectedMenu(input);
-                } else {
+                } else { // 메뉴에 없는 값을 입력할 경우
                     System.out.println("올바른 메뉴 번호를 입력해주세요.");
                 }
                 System.out.println();
