@@ -12,17 +12,9 @@ public class Main {
         while (true) {
             showMenu();
             int input = sc.nextInt();
-            String name = "";
-            double price = 0;
-            String description = "";
-            if (input != 0) {
-                name = menus.get(input-1).getName();
-                price = menus.get(input-1).getPrice();
-                description = menus.get(input-1).getDescription();
-            }
             switch (input) {
                 case 1, 2, 3, 4:
-                    System.out.println("선택한 메뉴: " + name + " | W " + price + " | " + description);
+                    displaySelectedMenu(input);
                     break;
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
@@ -43,12 +35,17 @@ public class Main {
 
     private static void showMenu() {
         for (int i = 0; i < menus.size(); i++) {
-            String name = menus.get(i).getName();
-            double price = menus.get(i).getPrice();
-            String description = menus.get(i).getDescription();
-
-            System.out.println(i+1 + ". " + name + "   | W " + price + " | " + description);
+            MenuItem  menu = menus.get(i);
+            System.out.printf("%d. %s   | W %.1f | %s%n", i + 1, menu.getName(), menu.getPrice(), menu.getDescription());
         }
         System.out.println("0. 종료      | 종료");
+    }
+
+    private static void displaySelectedMenu(int input) {
+        MenuItem selectedMenu = menus.get(input - 1);
+        System.out.printf("선택한 메뉴: %s | W %.1f | %s%n",
+                selectedMenu.getName(),
+                selectedMenu.getPrice(),
+                selectedMenu.getDescription());
     }
 }
