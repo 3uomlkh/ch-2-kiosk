@@ -15,26 +15,26 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         while (true) {
             showMenu();
-            String input = sc.next();
+            int input = sc.nextInt();
+            String name = "";
+            double price = 0;
+            String description = "";
+            if (input != 0) {
+                name = menus.get(input-1).getName();
+                price = menus.get(input-1).getPrice();
+                description = menus.get(input-1).getDescription();
+            }
             switch (input) {
-                case "1":
-                    System.out.println("ShackBurger 주문 완료");
+                case 1, 2, 3, 4:
+                    System.out.println("선택한 메뉴: " + name + " | W " + price + " | " + description);
                     break;
-                case "2":
-                    System.out.println("SmokeShack 주문 완료");
-                    break;
-                case "3":
-                    System.out.println("Cheeseburger 주문 완료");
-                    break;
-                case "4":
-                    System.out.println("Hamburger 주문 완료");
-                    break;
-                case "0":
+                case 0:
                     System.out.println("프로그램을 종료합니다.");
                     return;
                 default:
                     System.out.println("올바른 메뉴 번호를 입력해주세요.");
             }
+            System.out.println();
         }
     }
 
