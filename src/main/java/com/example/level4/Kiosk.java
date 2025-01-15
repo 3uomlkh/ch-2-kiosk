@@ -24,22 +24,51 @@ public class Kiosk {
                     continue;
                 }
 
-                // 메인 메뉴 입력 받기
+                // 메뉴 입력 받기
                 int selectedMenu = sc.nextInt();
                 if (selectedMenu == 0) {
                     System.out.println("프로그램을 종료합니다.");
                     break;
                 }
 
+                if (isValidMenu(selectedMenu)) {
+                    // 메뉴 아이템 출력
+                    showMenuItems(selectedMenu);
+                    // 메뉴 아이템 입력 받기
+                    int selectedMenuItem = sc.nextInt();
+                    // 0 입력 시 뒤로가기(메인 메뉴)
+                    if (selectedMenuItem == 0) continue;
+
+                } else { // 메뉴에 없는 값을 입력할 경우
+                    System.out.println("올바른 메뉴 번호를 입력해주세요.");
+                }
+                System.out.println();
             }
         }
+    }
+
+    private boolean isValidMenu(int input) {
+        return input > 0 && input <= menus.size();
     }
 
     private void showMenu() {
         System.out.println("[ MAIN MENU ]");
         for (int i = 0; i < menus.size(); i++) {
-            System.out.printf("%d. %s%n", i + 1, menus.get(i).getCategory());
+            System.out.printf("%d. %s", i + 1, menus.get(i).getCategory());
+            System.out.println();
         }
         System.out.println("0. 종료      | 종료");
+    }
+
+    private void showMenuItems(int input) {
+        System.out.printf("[ %s MENU ]", menus.get(input).getCategory());
+        System.out.println();
+        int size = menus.get(input).getMenuItems().size();
+        for (int i = 0; i < size; i++) {
+            MenuItem menuItem = menus.get(input).getMenuItems().get(i);
+            System.out.printf("%d. %s   | W %.1f | %s%n", i + 1,
+                    menuItem.getName(), menuItem.getPrice(), menuItem.getDescription());
+        }
+        System.out.println("0. 뒤로가기");
     }
 }
