@@ -38,6 +38,8 @@ public class Kiosk {
                     int selectedMenuItem = sc.nextInt();
                     // 0 입력 시 뒤로가기(메인 메뉴)
                     if (selectedMenuItem == 0) continue;
+                    // 선택한 메뉴 아이템 출력
+                    displaySelectedMenuItems(selectedMenuItem);
 
                 } else { // 메뉴에 없는 값을 입력할 경우
                     System.out.println("올바른 메뉴 번호를 입력해주세요.");
@@ -70,5 +72,13 @@ public class Kiosk {
                     menuItem.getName(), menuItem.getPrice(), menuItem.getDescription());
         }
         System.out.println("0. 뒤로가기");
+    }
+
+    private void displaySelectedMenuItems(int input) {
+        MenuItem menuItem = menus.get(input).getMenuItems().get(input - 1);
+        System.out.printf("선택한 메뉴: %s | W %.1f | %s%n",
+                menuItem.getName(),
+                menuItem.getPrice(),
+                menuItem.getDescription());
     }
 }
