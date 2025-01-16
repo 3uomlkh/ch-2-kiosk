@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class Kiosk {
     private List<Menu> menus = new ArrayList<>();
-
     public Kiosk(List<Menu> menus) {
         this.menus = menus;
     }
@@ -14,18 +13,11 @@ public class Kiosk {
     public void start() {
         try (Scanner sc = new Scanner(System.in)) {
             while (true) {
-                // 메뉴 출력
+                // 메인 메뉴 출력
                 showMenu();
-                System.out.print("메인 메뉴를 선택하세요: ");
 
-                if (!sc.hasNextInt()) {
-                    System.out.println("숫자를 입력해주세요.");
-                    sc.next();
-                    continue;
-                }
-
-                // 메뉴 입력 받기
-                int selectedMenu = sc.nextInt();
+                // 메인 메뉴 입력
+                int selectedMenu = getUserInput(sc, "메인 메뉴를 선택하세요: ");
                 if (selectedMenu == 0) {
                     System.out.println("프로그램을 종료합니다.");
                     break;
@@ -35,8 +27,7 @@ public class Kiosk {
                     // 메뉴 아이템 출력
                     showMenuItems(selectedMenu);
                     // 메뉴 아이템 입력 받기
-                    System.out.print("메뉴를 선택하세요: ");
-                    int selectedMenuItem = sc.nextInt();
+                    int selectedMenuItem = getUserInput(sc, "메뉴를 선택하세요: ");
                     // 0 입력 시 뒤로가기(메인 메뉴)
                     if (selectedMenuItem == 0) continue;
                     // 선택한 메뉴 아이템 출력
@@ -51,6 +42,16 @@ public class Kiosk {
                 System.out.println();
             }
         }
+    }
+
+    // 메시지 출력 후 사용자 입력이 숫자인지 검사
+    private int getUserInput(Scanner sc, String message) {
+        System.out.print(message);
+        while (!sc.hasNextInt()) {
+            System.out.println("숫자를 입력해주세요.");
+            sc.next();
+        }
+        return sc.nextInt();
     }
 
     private boolean isValidMenuItem(int menuIndex, int itemIndex) {
