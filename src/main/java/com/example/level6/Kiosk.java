@@ -6,52 +6,82 @@ import java.util.Scanner;
 
 public class Kiosk {
     private List<Menu> menus = new ArrayList<>();
+    private int selectedMenu, selectedMenuItem, cartSelection, selectedOrderMenu;
+    private Scanner sc = new Scanner(System.in);
 
     public Kiosk(List<Menu> menus) {
         this.menus = menus;
     }
 
     public void start() {
-        try (Scanner sc = new Scanner(System.in)) {
-            while (true) {
-                // 메인 메뉴 출력
+        while (true) {
+            kioskInit();
+            if (selectedMenu == 0) {
+                System.out.println("프로그램을 종료합니다.");
+                return;
+            }
+
+            // 장바구니 추가 질문
+            int cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
+            if (cartSelection == 1) {
+                // 장바구니 추가
+                selectedOrderMenu = getUserInput(sc, "아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
                 showMenu();
+                showOrderMenu();
+            } else {
+                // 취소
+                System.out.println("장바구니 추가 취소");
+                return;
+            }
+        }
+    }
 
-                // 메인 메뉴 입력
-                int selectedMenu = getUserInput(sc, "메인 메뉴를 선택하세요: ");
-                if (selectedMenu == 0) {
-                    System.out.println("프로그램을 종료합니다.");
-                    break;
+    private void kioskInit() {
+        settingMenu();
+        if (selectedMenu == 0) return;
+        settingMenuItem();
+    }
+
+    private void settingMenuItem() {
+        showMenuItems(selectedMenu);
+        getMenuItem();
+        displaySelectedMenuItems(selectedMenu, selectedMenuItem);
+    }
+
+    private void getMenuItem() {
+        while (true) {
+            try {
+                selectedMenuItem = getUserInput(sc, "메뉴를 선택하세요: ");
+                if (selectedMenuItem == 0) return;
+                else if (!isValidMenuItem(selectedMenu, selectedMenuItem)) {
+                    System.out.println("올바른 메뉴 아이템 번호를 입력해주세요.");
+                    return;
                 }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
-                if (isValidMenu(selectedMenu)) {
-                    // 메뉴 아이템 출력
-                    showMenuItems(selectedMenu);
-                    // 메뉴 아이템 입력 받기
-                    int selectedMenuItem = getUserInput(sc, "메뉴를 선택하세요: ");
-                    // 0 입력 시 뒤로가기(메인 메뉴)
-                    if (selectedMenuItem == 0) continue;
-                    // 선택한 메뉴 아이템 출력
-                    if (isValidMenuItem(selectedMenu, selectedMenuItem)) {
-                        displaySelectedMenuItems(selectedMenu, selectedMenuItem);
-                        // 장바구니 추가 질문
-                        int cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
-                        if (cartSelection == 1) {
-                            // 장바구니 추가
-                            int selectedOrderMenu = getUserInput(sc, "아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
-                            showMenu();
-                            showOrderMenu();
-                        } else {
-                            // 취소
-                            continue;
-                        }
-                    } else {
-                        System.out.println("올바른 메뉴 아이템 번호를 입력해주세요.");
-                    }
-                } else { // 메뉴에 없는 값을 입력할 경우
+    private void settingMenu() {
+        showMenu();
+        getMenu();
+    }
+
+    private void getMenu() {
+        while (true) {
+            try {
+                selectedMenu = getUserInput(sc, "메인 메뉴를 선택하세요: ");
+                if (selectedMenu == 0) return;
+
+                if (!isValidMenu(selectedMenu)) {
                     System.out.println("올바른 메뉴 번호를 입력해주세요.");
+                    continue;
                 }
-                System.out.println();
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -59,12 +89,11 @@ public class Kiosk {
     // 메시지 출력 후 사용자 입력이 숫자인지 검사
     private int getUserInput(Scanner sc, String message) {
         System.out.print(message);
-        while (!sc.hasNextInt()) {
-            System.out.println("숫자를 입력해주세요.");
-            sc.next();
-            System.out.print(message);
+        String input = sc.nextLine();
+        if (!input.chars().allMatch(Character::isDigit)) {
+            throw new IllegalArgumentException("숫자를 입력해주세요.");
         }
-        return sc.nextInt();
+        return Integer.parseInt(input);
     }
 
     private boolean isValidMenuItem(int menuIndex, int itemIndex) {
