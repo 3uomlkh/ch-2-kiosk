@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Kiosk {
-    private List<Menu> menus = new ArrayList<>();
+    private final List<Menu> menus;
     private int selectedMenu, selectedMenuItem, cartSelection, selectedOrderMenu;
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
+    private Cart cart = new Cart();
 
     public Kiosk(List<Menu> menus) {
         this.menus = menus;
@@ -25,13 +26,21 @@ public class Kiosk {
             int cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
             if (cartSelection == 1) {
                 // 장바구니 추가
-                selectedOrderMenu = getUserInput(sc, "아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
-                showMenu();
-                showOrderMenu();
+                cart.add(menus.get(selectedMenu-1), selectedMenuItem);
+                cart.showAddedItem();
+                cart.showAllCartItems();
+//                selectedOrderMenu = getUserInput(sc, "아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
+//                showMenu();
+//                showOrderMenu();
+//                if (selectedOrderMenu == 4) {
+//                    // 주문
+//
+//                } else if (selectedOrderMenu == 5) {
+//                    // 주문 취소
+//                }
             } else {
                 // 취소
                 System.out.println("장바구니 추가 취소");
-                return;
             }
         }
     }
