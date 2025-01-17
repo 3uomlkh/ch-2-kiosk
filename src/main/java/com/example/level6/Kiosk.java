@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Kiosk {
     private List<Menu> menus = new ArrayList<>();
+
     public Kiosk(List<Menu> menus) {
         this.menus = menus;
     }
@@ -33,6 +34,17 @@ public class Kiosk {
                     // 선택한 메뉴 아이템 출력
                     if (isValidMenuItem(selectedMenu, selectedMenuItem)) {
                         displaySelectedMenuItems(selectedMenu, selectedMenuItem);
+                        // 장바구니 추가 질문
+                        int cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
+                        if (cartSelection == 1) {
+                            // 장바구니 추가
+                            int selectedOrderMenu = getUserInput(sc, "아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
+                            showMenu();
+                            showOrderMenu();
+                        } else {
+                            // 취소
+                            continue;
+                        }
                     } else {
                         System.out.println("올바른 메뉴 아이템 번호를 입력해주세요.");
                     }
@@ -69,6 +81,13 @@ public class Kiosk {
             System.out.printf("%d. %s", i + 1, menus.get(i).getCategory());
             System.out.println();
         }
+        System.out.println("0. 종료      | 종료");
+    }
+
+    private void showOrderMenu() {
+        System.out.println("[ ORDER MENU ]");
+        System.out.println("4. Orders       | 장바구니를 확인 후 주문합니다.");
+        System.out.println("5. Cancel       | 진행중인 주문을 취소합니다.");
         System.out.println("0. 종료      | 종료");
     }
 
