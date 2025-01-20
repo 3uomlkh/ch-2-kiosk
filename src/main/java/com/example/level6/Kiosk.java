@@ -9,25 +9,27 @@ public class Kiosk {
     private int selectedMenu, selectedMenuItem, cartSelection, selectedOrderMenu;
     private final Scanner sc = new Scanner(System.in);
     private Cart cart = new Cart();
+    private boolean isRunning = true;
 
     public Kiosk(List<Menu> menus) {
         this.menus = menus;
     }
 
     public void start() {
-        while (true) {
+        while (isRunning) {
             kioskInit();
             if (selectedMenu == 0) {
                 System.out.println("프로그램을 종료합니다.");
-                return;
+                isRunning = false;
+            } else {
+                cartInit();
             }
-
-            cartInit();
         }
     }
 
     private void cartInit() {
         settingCart();
+        handleCartWithItems();
     }
 
     private void settingCart() {
@@ -35,10 +37,45 @@ public class Kiosk {
             try {
                 displaySelectedOrderMenu(selectedMenu, selectedMenuItem);
                 cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
-                if (cartSelection == 0) return;
+                if (cartSelection == 2) return;
                 cart.add(menus.get(selectedMenu-1), selectedMenuItem);
                 cart.showAddedItem();
                 cart.showAllCartItems();
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void handleCartWithItems() {
+        System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.");
+        showMenu();
+        showOrderMenu();
+        getOrder();
+    }
+
+    private void getOrder() {
+        while (true) {
+            try {
+                selectedOrderMenu = getUserInput(sc, "");
+                if (selectedOrderMenu == 0) {
+                    selectedMenu = 0;
+                    isRunning = false;
+                    return;
+                }
+                if (selectedOrderMenu <= menus.size()) {
+                    selectedMenu = selectedOrderMenu;
+                    settingMenuItem();
+                    cartInit();
+                    break;
+                }
+
+                if (selectedOrderMenu == 4) {
+                    // Order
+                } else if (selectedOrderMenu == 5) {
+                    // Cancel
+                }
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -124,10 +161,9 @@ public class Kiosk {
     }
 
     private void showOrderMenu() {
-        System.out.println("[ ORDER MENU ]");
+        System.out.println("\n[ ORDER MENU ]");
         System.out.println("4. Orders       | 장바구니를 확인 후 주문합니다.");
         System.out.println("5. Cancel       | 진행중인 주문을 취소합니다.");
-        System.out.println("0. 종료      | 종료");
     }
 
     private void showMenuItems(int input) {
@@ -152,7 +188,7 @@ public class Kiosk {
 
     private void displaySelectedOrderMenu(int i1, int i2) {
         MenuItem menuItem = menus.get(i1 - 1).getMenuItems().get(i2 - 1);
-        System.out.printf("%s | W %.1f | %s%n",
+        System.out.printf("\"%s | W %.1f | %s\"%n",
                 menuItem.getName(),
                 menuItem.getPrice(),
                 menuItem.getDescription());
