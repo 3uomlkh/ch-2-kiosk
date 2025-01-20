@@ -59,14 +59,14 @@ public class Kiosk {
         while (true) {
             try {
                 selectedOrderMenu = getUserInput(sc, "");
+
                 if (isExitCondition(selectedOrderMenu)) {
                     handleExit();
                     return;
                 }
-                if (selectedOrderMenu <= menus.size()) {
-                    selectedMenu = selectedOrderMenu;
-                    settingMenuItem();
-                    cartInit();
+
+                if (isValidMainMenu(selectedOrderMenu)) {
+                    handleMainMenuSelection(selectedOrderMenu);
                     break;
                 }
 
@@ -83,6 +83,12 @@ public class Kiosk {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private void handleMainMenuSelection(int option) {
+        selectedMenu = option;
+        settingMenuItem();
+        cartInit();
     }
 
     private boolean isExitCondition(int option) {
@@ -133,7 +139,7 @@ public class Kiosk {
             try {
                 selectedMenu = getUserInput(sc, "메인 메뉴를 선택하세요: ");
                 if (isExitCondition(selectedMenu)) return;
-                if (!isValidMenu(selectedMenu)) {
+                if (!isValidMainMenu(selectedMenu)) {
                     System.out.println("올바른 메뉴 번호를 입력해주세요.");
                     continue;
                 }
@@ -158,7 +164,7 @@ public class Kiosk {
         return itemIndex > 0 && itemIndex <= menus.get(menuIndex - 1).getMenuItems().size();
     }
 
-    private boolean isValidMenu(int input) {
+    private boolean isValidMainMenu(int input) {
         return input > 0 && input <= menus.size();
     }
 
