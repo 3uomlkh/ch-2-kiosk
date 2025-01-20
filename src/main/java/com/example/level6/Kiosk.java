@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 public class Kiosk {
     private final List<Menu> menus;
-    private int selectedMenu, selectedMenuItem, cartSelection, selectedOrderMenu;
+    private int selectedMenu;
+    private int selectedMenuItem;
+    private int selectedOrderMenu;
     private final Scanner sc = new Scanner(System.in);
-    private Cart cart = new Cart();
+    private final Cart cart = new Cart();
     private boolean isRunning = true;
 
     public Kiosk(List<Menu> menus) {
@@ -36,7 +38,7 @@ public class Kiosk {
         while (true) {
             try {
                 displaySelectedOrderMenu(selectedMenu, selectedMenuItem);
-                cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
+                int cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
                 if (cartSelection == 2) return;
                 cart.add(menus.get(selectedMenu-1), selectedMenuItem);
                 cart.showAddedItem();
@@ -70,18 +72,19 @@ public class Kiosk {
                     break;
                 }
 
-                if (selectedOrderMenu == 4) {
-                    // Order
-                    cart.order();
-                } else if (selectedOrderMenu == 5) {
-                    // Cancel
-                    System.out.println("주문을 취소하고 메인 메뉴로 돌아갑니다.");
-                    return;
-                }
+                handleOrder();
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private void handleOrder() {
+        if (selectedOrderMenu == 4) { // Order
+            cart.order();
+        } else if (selectedOrderMenu == 5) { // Cancel
+            System.out.println("주문을 취소하고 메인 메뉴로 돌아갑니다.");
         }
     }
 
