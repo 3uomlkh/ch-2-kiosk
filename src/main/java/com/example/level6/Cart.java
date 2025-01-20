@@ -36,7 +36,19 @@ public class Cart {
         }
     }
 
-    public double getTotalPrice() {
+     public void printOrderResult() {
+         System.out.println("[ Orders ]");
+         for (MenuItem item : items.keySet()) {
+             System.out.printf("%s | W %.1f | %s%n",
+                     item.getName(),
+                     item.getPrice(),
+                     item.getDescription());
+         }
+         System.out.println("[ Total ]");
+         System.out.println("W" + getTotalPrice());
+     }
+
+    private double getTotalPrice() {
         double total = 0;
         for (MenuItem item : items.keySet()) {
             total += item.getPrice() * items.get(item);
