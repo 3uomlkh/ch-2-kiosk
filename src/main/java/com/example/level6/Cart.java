@@ -36,6 +36,14 @@ public class Cart {
         }
     }
 
+    public double getTotalPrice() {
+        double total = 0;
+        for (MenuItem item : items.keySet()) {
+            total += item.getPrice() * items.get(item);
+        }
+        return total;
+    }
+
     public void clearCart() {
         items.clear();
     }
