@@ -33,6 +33,7 @@ public class Kiosk {
     private void settingCart() {
         while (true) {
             try {
+                displaySelectedOrderMenu(selectedMenu, selectedMenuItem);
                 cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
                 if (cartSelection == 0) return;
                 cart.add(menus.get(selectedMenu-1), selectedMenuItem);
@@ -144,6 +145,14 @@ public class Kiosk {
     private void displaySelectedMenuItems(int i1, int i2) {
         MenuItem menuItem = menus.get(i1 - 1).getMenuItems().get(i2 - 1);
         System.out.printf("선택한 메뉴: %s | W %.1f | %s%n",
+                menuItem.getName(),
+                menuItem.getPrice(),
+                menuItem.getDescription());
+    }
+
+    private void displaySelectedOrderMenu(int i1, int i2) {
+        MenuItem menuItem = menus.get(i1 - 1).getMenuItems().get(i2 - 1);
+        System.out.printf("%s | W %.1f | %s%n",
                 menuItem.getName(),
                 menuItem.getPrice(),
                 menuItem.getDescription());
