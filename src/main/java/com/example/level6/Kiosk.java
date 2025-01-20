@@ -73,8 +73,11 @@ public class Kiosk {
 
                 if (selectedOrderMenu == 4) {
                     // Order
+                    cart.printOrderResult();
                 } else if (selectedOrderMenu == 5) {
                     // Cancel
+                    System.out.println("주문을 취소하고 메인 메뉴로 돌아갑니다.");
+                    return;
                 }
                 break;
             } catch (IllegalArgumentException e) {
