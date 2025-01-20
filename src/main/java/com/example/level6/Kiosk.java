@@ -18,7 +18,7 @@ public class Kiosk {
     public void start() {
         while (isRunning) {
             kioskInit();
-            if (selectedMenu == 0) {
+            if (isExitCondition(selectedMenu)) {
                 System.out.println("프로그램을 종료합니다.");
                 isRunning = false;
             } else {
@@ -59,9 +59,8 @@ public class Kiosk {
         while (true) {
             try {
                 selectedOrderMenu = getUserInput(sc, "");
-                if (selectedOrderMenu == 0) {
-                    selectedMenu = 0;
-                    isRunning = false;
+                if (isExitCondition(selectedOrderMenu)) {
+                    handleExit();
                     return;
                 }
                 if (selectedOrderMenu <= menus.size()) {
@@ -86,9 +85,19 @@ public class Kiosk {
         }
     }
 
+    private boolean isExitCondition(int option) {
+        return option == 0;
+    }
+
+    private void handleExit() {
+        selectedMenu = 0;
+        isRunning = false;
+        System.out.println("프로그램을 종료합니다.");
+    }
+
     private void kioskInit() {
         settingMenu();
-        if (selectedMenu == 0) return;
+        if (isExitCondition(selectedMenu)) return;
         settingMenuItem();
     }
 
@@ -102,7 +111,7 @@ public class Kiosk {
         while (true) {
             try {
                 selectedMenuItem = getUserInput(sc, "메뉴를 선택하세요: ");
-                if (selectedMenuItem == 0) return;
+                if (isExitCondition(selectedMenuItem)) return;
                 else if (!isValidMenuItem(selectedMenu, selectedMenuItem)) {
                     System.out.println("올바른 메뉴 아이템 번호를 입력해주세요.");
                     return;
@@ -123,8 +132,7 @@ public class Kiosk {
         while (true) {
             try {
                 selectedMenu = getUserInput(sc, "메인 메뉴를 선택하세요: ");
-                if (selectedMenu == 0) return;
-
+                if (isExitCondition(selectedMenu)) return;
                 if (!isValidMenu(selectedMenu)) {
                     System.out.println("올바른 메뉴 번호를 입력해주세요.");
                     continue;
