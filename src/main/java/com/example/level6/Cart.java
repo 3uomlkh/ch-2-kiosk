@@ -34,6 +34,9 @@ public class Cart {
                     item.getDescription(),
                     items.get(item));
         }
+    }
 
+    public void clearCart() {
+        items.clear();
     }
 }
