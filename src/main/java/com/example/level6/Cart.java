@@ -36,16 +36,12 @@ public class Cart {
         }
     }
 
-     public void printOrderResult() {
+     public void order() {
          System.out.println("[ Orders ]");
-         for (MenuItem item : items.keySet()) {
-             System.out.printf("%s | W %.1f | %s%n",
-                     item.getName(),
-                     item.getPrice(),
-                     item.getDescription());
-         }
+         showAllCartItems();
          System.out.println("[ Total ]");
-         System.out.println("W" + getTotalPrice());
+         System.out.println("W " + getTotalPrice());
+         clearCart();
      }
 
     private double getTotalPrice() {
@@ -56,7 +52,7 @@ public class Cart {
         return total;
     }
 
-    public void clearCart() {
+    private void clearCart() {
         items.clear();
     }
 }
