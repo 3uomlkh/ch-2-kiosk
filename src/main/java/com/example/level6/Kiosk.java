@@ -22,25 +22,25 @@ public class Kiosk {
                 return;
             }
 
-            // 장바구니 추가 질문
-            int cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
-            if (cartSelection == 1) {
-                // 장바구니 추가
+            cartInit();
+        }
+    }
+
+    private void cartInit() {
+        settingCart();
+    }
+
+    private void settingCart() {
+        while (true) {
+            try {
+                cartSelection = getUserInput(sc, "위 메뉴를 장바구니에 추가하시겠습니까?\n1. 확인\t2. 취소\n");
+                if (cartSelection == 0) return;
                 cart.add(menus.get(selectedMenu-1), selectedMenuItem);
                 cart.showAddedItem();
                 cart.showAllCartItems();
-//                selectedOrderMenu = getUserInput(sc, "아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
-//                showMenu();
-//                showOrderMenu();
-//                if (selectedOrderMenu == 4) {
-//                    // 주문
-//
-//                } else if (selectedOrderMenu == 5) {
-//                    // 주문 취소
-//                }
-            } else {
-                // 취소
-                System.out.println("장바구니 추가 취소");
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
